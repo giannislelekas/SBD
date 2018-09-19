@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0m/home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/DFs/src/main/scala/DF.scala:87:32: DF.dataDF.GDeltData does not take parameters[0m
+[0m[[0m[31merror[0m] [0m[0m        val names = ds.map(x=>x(23))[0m
+[0m[[0m[31merror[0m] [0m[0m                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
