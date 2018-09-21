@@ -1,25 +1,33 @@
-[0m[[0m[0minfo[0m] [0m[0mPackaging /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/rdd_2.11-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0minfo[0m] [0m[0mPackaging /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/rdd_2.11-0.1.0-SNAPSHOT.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$4.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$4.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$8.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$8.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$3.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$3.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$2.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$6.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$2.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$7.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$7.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$main$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$main$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$7.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$11.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$11.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$main$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$main$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$5.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/target/scala-2.11/classes/implementationRDD$$anonfun$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$10.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$10.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$9.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$9.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	implementationRDD$$anonfun$12.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/mixalis/Seagate Expansion Drive/TU Delft/git/SBD/RDDs/target/scala-2.11/classes/implementationRDD$$anonfun$12.class[0m
 [0m[[0m[0minfo[0m] [0m[0mDone packaging.[0m
