@@ -5,6 +5,8 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.expressions.Window
 import java.sql.Date
+import org.apache.spark.sql.internal.SQLConf.CBO_ENABLED
+import org.apache.spark.storage.StorageLevel
 
 
 object dataDFs{
@@ -50,9 +52,12 @@ object dataDFs{
             .appName("Lab 1 - DFs")
             .config("spark.master", "local")
             .getOrCreate():
-        
+            // Pithani veltiwsi 3 - Kanoume persist i' cache sta shmeia pou dimiourgoume antikeimena pou tha ksanaxrisimopoithoun
+            .persist(StorageLevel.MEMORY_ONLY_SER)       
         import spark.implicits._
         
+        // Pithani veltiwsi 1 - Xrisimopoioume diaforetiko query optimizer
+        spark.conf.set(CBO_ENABLED.key, true)
         // Read the input data, separate the fields and store them in a DataSet
         val ds = spark.read
             .schema(schema)
@@ -62,15 +67,21 @@ object dataDFs{
         
         
         // ta string imerominies nan ginoun int
-        val df = ds
+        //val df = ds
             // filter out rows with empty AllNames columns
-            .filter(x => x.getAs("AllNames") != null)
+        //Pithani veltiwsi 2 - Xrisimopoisi SQL queries anti gia filter
+        ds.createOrReplaceTempView("articles")
+        val df = spark.sql("SELECT DATE,AllNames FROM articles WHERE AllNames IS NOT NULL")
+            //.filter(x => x.getAs("AllNames") != null)
             // create tuples of the (Date, AllNames) form
             //.select("DATE", "AllNames")   **de xreaizetai afou kanoume to map parakatw
             // remove the offsets using a regular expression that captures only digits
             .withColumn("AllNames", regexp_replace(col("AllNames"), "[0-9]", ""))
             // separate Names
             .map(x => (x.getAs[Date]("DATE"), x.getAs[String]("AllNames").split("[;,]")))
+            // Pithani veltiwsi 3
+            .repartition($"_1")
+            .persist
             // flatten each AllNames to a single record per Name
             .withColumn("_2", explode($"_2"))
             // remove wrong values
@@ -84,6 +95,8 @@ object dataDFs{
             // sort in a descending order based on counts
             .sort(desc("count"))
         
+        // pithani veltiwsi 4 - Custom Encoder
+        implicit val mapEncoder = org.apache.spark.sql.Encoders.kryo[(String,String,Int)]
         // create groupings based on Date, displaying results in a count descending way
         //val window = Window.partitionBy("_1").orderBy(desc("sum(_3)"))
         
