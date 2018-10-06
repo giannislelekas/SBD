@@ -51,9 +51,8 @@ object dataDFs{
             .builder
             .appName("Lab 1 - DFs")
             .config("spark.master", "local")
-            .getOrCreate():
-            // Pithani veltiwsi 3 - Kanoume persist i' cache sta shmeia pou dimiourgoume antikeimena pou tha ksanaxrisimopoithoun
-            .persist(StorageLevel.MEMORY_ONLY_SER)       
+            .getOrCreate()
+            
         import spark.implicits._
         
         // Pithani veltiwsi 1 - Xrisimopoioume diaforetiko query optimizer
@@ -63,8 +62,9 @@ object dataDFs{
             .schema(schema)
             .option("sep", "\t")
             .option("dateFormat", "yyyyMMddHHmmss") //epistrefei to swsto xwris na allaksw to format
-            .csv("/home/giannislelekas/Desktop/TU/Supercomputing for Big Data - ET4310/Labs/Lab1/SBD-2018/data/segment/*.csv")            
-        
+            .csv("../*.csv")            
+            // Pithani veltiwsi 3 - Kanoume persist i' cache sta shmeia pou dimiourgoume antikeimena pou tha ksanaxrisimopoithoun
+            .persist(StorageLevel.MEMORY_ONLY_SER)       
         
         // ta string imerominies nan ginoun int
         //val df = ds
@@ -81,7 +81,7 @@ object dataDFs{
             .map(x => (x.getAs[Date]("DATE"), x.getAs[String]("AllNames").split("[;,]")))
             // Pithani veltiwsi 3
             .repartition($"_1")
-            .persist
+            .persist()
             // flatten each AllNames to a single record per Name
             .withColumn("_2", explode($"_2"))
             // remove wrong values
