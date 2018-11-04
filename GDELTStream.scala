@@ -2,6 +2,7 @@ package lab3
 
 import java.util.Properties
 import java.util.concurrent.TimeUnit
+import scala.util.control.Breaks._
 
 import org.apache.kafka.streams.kstream.{Transformer}
 import org.apache.kafka.streams.processor._
@@ -43,7 +44,7 @@ object GDELTStream extends App {
       Serdes.Long)
   
   // Second state store using (topic as key, string of comma separated timestamps)
-  val  timestampStoreSupplier: StoreBuilder[KeyValueStore[String, List[Long]]] =
+  val  timestampStoreSupplier: StoreBuilder[KeyValueStore[String, String]] =
     Stores.keyValueStoreBuilder(
       Stores.inMemoryKeyValueStore("timestamps"),
       Serdes.String,
@@ -84,14 +85,16 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
   var context: ProcessorContext = _
   // Define the state store as a field of the transformer
   var counts: KeyValueStore[String, Long] = _
-  var timestamps: KeyValueStore[String, List[Long]] = _
+  var timestamps: KeyValueStore[String, String] = _
 
   // Initialize Transformer object
   def init(context: ProcessorContext) {
     this.context = context
+    val timestamp: Long = this.context.timestamp()
     this.counts = this.context.getStateStore("hist").asInstanceOf[KeyValueStore[String, Long]]
-    this.timestamps = this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[String, String]]
-    this.context.schedule(2000, PunctuationType.WALL_CLOCK_TIME, (timestamp: Long) => { 
+    this.timestamps = this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[ String, String]]
+    this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[String, String]]
+    this.context.schedule(20000, PunctuationType.WALL_CLOCK_TIME, (timestamp) => { 
       //println("Current time:")
       //println(timestamp)
       val iter: KeyValueIterator[String,String] = this.timestamps.all()
@@ -100,19 +103,23 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
         //println(entry)
         val topic: String = entry.key
         val topicTimestamps: String = entry.value
-        val arrayTopicTimestamps: Array[String] = topicTimestamps.split(',')
-        for (topicTimestamp <- arrayTopicTimestamps) {
-          if (timestamp - topicTimestamp > 1000) {
+        val arrayTopicTimestamps: List[String] = topicTimestamps.split(',').toList
+        var c = 0
+        breakable{for (topicTimestamp <- arrayTopicTimestamps) {
+          if (timestamp - topicTimestamp.toLong > 1000) {
             //println(topic)
             //println(timestamp)
             //println(topicTimestamp)
             this.counts.put(topic, this.counts.get(topic) - 1)
             this.context.forward(topic, this.counts.get(topic))
+            //arrayTopicTimestamps.remove(c)
+            c += +1
             //this.timestamps.delete(articleTopic)
           }
-        }
-        val timestampsLeft = arrayTopicTimestamps.remove()
-        this.timestamps.put(topic,timestampsLeft)
+          break
+        }}
+        //val timestampsLeft = arrayTopicTimestamps.remove()
+        this.timestamps.put(topic,arrayTopicTimestamps.mkString(" "))
       }
       iter.close()
       this.context.commit()
