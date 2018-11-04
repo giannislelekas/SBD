@@ -2,7 +2,7 @@ package lab3
 
 import java.util.Properties
 import java.util.concurrent.TimeUnit
-import scala.util.control.Breaks._
+import java.util.ArrayList
 
 import org.apache.kafka.streams.kstream.{Transformer}
 import org.apache.kafka.streams.processor._
@@ -14,6 +14,7 @@ import org.apache.kafka.streams.state._
 import org.apache.kafka.streams.KeyValue
 
 import scala.collection.JavaConversions._
+import scala.util.control.Breaks._
 
 
 object GDELTStream extends App {
@@ -90,11 +91,11 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
   // Initialize Transformer object
   def init(context: ProcessorContext) {
     this.context = context
-    val timestamp: Long = this.context.timestamp()
+//    val timestamp: Long = this.context.timestamp()
     this.counts = this.context.getStateStore("hist").asInstanceOf[KeyValueStore[String, Long]]
     this.timestamps = this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[ String, String]]
     this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[String, String]]
-    this.context.schedule(20000, PunctuationType.WALL_CLOCK_TIME, (timestamp) => { 
+    this.context.schedule(5000, PunctuationType.WALL_CLOCK_TIME, (timestamp) => { 
       //println("Current time:")
       //println(timestamp)
       val iter: KeyValueIterator[String,String] = this.timestamps.all()
@@ -103,23 +104,28 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
         //println(entry)
         val topic: String = entry.key
         val topicTimestamps: String = entry.value
-        val arrayTopicTimestamps: List[String] = topicTimestamps.split(',').toList
-        var c = 0
-        breakable{for (topicTimestamp <- arrayTopicTimestamps) {
-          if (timestamp - topicTimestamp.toLong > 1000) {
+        println(topicTimestamps)
+        val listTopicTimestamps: List[String] = topicTimestamps.split(',').toList
+        println(listTopicTimestamps)
+        val toBeRemoved: ArrayList[Int] = new ArrayList
+        var c: Int = 0
+        breakable{for (topicTimestamp <- listTopicTimestamps) {
+          if (timestamp - topicTimestamp.toLong > 2000) {
             //println(topic)
             //println(timestamp)
             //println(topicTimestamp)
             this.counts.put(topic, this.counts.get(topic) - 1)
             this.context.forward(topic, this.counts.get(topic))
-            //arrayTopicTimestamps.remove(c)
-            c += +1
+            //listTopicTimestamps.remove(c)
+            toBeRemoved.add(c)
+            c += 1
             //this.timestamps.delete(articleTopic)
           }
           break
         }}
         //val timestampsLeft = arrayTopicTimestamps.remove()
-        this.timestamps.put(topic,arrayTopicTimestamps.mkString(" "))
+        this.timestamps.put(topic,listTopicTimestamps.diff(toBeRemoved).mkString(","))        
+        println(this.timestamps.get(topic))        
       }
       iter.close()
       this.context.commit()
