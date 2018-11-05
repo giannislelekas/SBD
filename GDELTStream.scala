@@ -91,41 +91,45 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
   // Initialize Transformer object
   def init(context: ProcessorContext) {
     this.context = context
-//    val timestamp: Long = this.context.timestamp()
+    
+    // Initialize the state stores
     this.counts = this.context.getStateStore("hist").asInstanceOf[KeyValueStore[String, Long]]
     this.timestamps = this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[ String, String]]
-    this.context.getStateStore("timestamps").asInstanceOf[KeyValueStore[String, String]]
-    this.context.schedule(5000, PunctuationType.WALL_CLOCK_TIME, (timestamp) => { 
-      //println("Current time:")
-      //println(timestamp)
+
+    // Schedule a Punctutator every one minute to find records that are older than an hour
+    this.context.schedule(60000, PunctuationType.WALL_CLOCK_TIME, (timestamp) => { 
+      // Iterate over the timestamps state store
       val iter: KeyValueIterator[String,String] = this.timestamps.all()
       while (iter.hasNext() ) {
         val entry: KeyValue[String,String] = iter.next()
-        //println(entry)
-        val topic: String = entry.key
-        val topicTimestamps: String = entry.value
-        println(topicTimestamps)
-        val listTopicTimestamps: List[String] = topicTimestamps.split(',').toList
-        println(listTopicTimestamps)
-        val toBeRemoved: ArrayList[Int] = new ArrayList
+        val name: String = entry.key
+        val nameTimestamps: String = entry.value
+        // Create a List of all the timestamps related to a name
+        val listNamesTimestamps: List[String] = nameTimestamps.split(',').toList
+        // Initialize a List for all timestamps that need to be removed
+        val toBeRemoved: ArrayList[String] = new ArrayList
+        // Initialize the counter of timestamps that need to be removed
         var c: Int = 0
-        breakable{for (topicTimestamp <- listTopicTimestamps) {
-          if (timestamp - topicTimestamp.toLong > 2000) {
-            //println(topic)
-            //println(timestamp)
-            //println(topicTimestamp)
-            this.counts.put(topic, this.counts.get(topic) - 1)
-            this.context.forward(topic, this.counts.get(topic))
-            //listTopicTimestamps.remove(c)
-            toBeRemoved.add(c)
-            c += 1
-            //this.timestamps.delete(articleTopic)
-          }
-          break
+        breakable{for (i<-0 until listNamesTimestamps.length) {
+            if (timestamp - listNamesTimestamps(i).toLong > 60 * 60 * 1000) {
+              toBeRemoved.add(listNamesTimestamps(i))
+              c += 1  
+            }else{
+              break
+            }
         }}
-        //val timestampsLeft = arrayTopicTimestamps.remove()
-        this.timestamps.put(topic,listTopicTimestamps.diff(toBeRemoved).mkString(","))        
-        println(this.timestamps.get(topic))        
+        if (c != 0){
+          // Update the histogram and the consumer 
+          this.counts.put(name, this.counts.get(name) - c.toLong)
+          this.context.forward(name, this.counts.get(name))
+          // Remove the timestamps that were found to correspond to more than an hour later
+          this.timestamps.put(name,listNamesTimestamps.diff(toBeRemoved).mkString(","))   
+          // If a name has no mentions in the last hour, remove it from the state stores
+          if (this.counts.get(name) == 0){
+            this.counts.delete(name)
+            this.timestamps.delete(name)
+          }
+        }
       }
       iter.close()
       this.context.commit()
@@ -134,13 +138,13 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
 
   // Should return the current count of the name during the _last_ hour
   def transform(key: String, name: String): (String, Long) = {
-    // Example of taking the event-time timestamp created by Kafka for each stream record
+    // Get the event-time timestamp created by Kafka for each stream record
     val timestamp = this.context.timestamp()
-    //println(timestamp)
+    // Initialize helpers
     val existing = Option(this.counts.get(name))
     var count = 1L
-    //println("Record time:")
-    //println(timestamp)
+    
+    // Put this timestamp into the corresponding state store relating it to the current name
     if (Option(this.timestamps.get(name)) == None){
       this.timestamps.put(name,timestamp.toString)
     }else{
@@ -157,8 +161,6 @@ class HistogramTransformer extends Transformer[String, String, (String, Long)] {
       this.counts.put(name, count)
     }
     // Pass the new record to the stream, it is used by GDELT consumer to update the histogram
-    //println(name,count)
-//    println(key,name)
     return (name, count)
   }
 
